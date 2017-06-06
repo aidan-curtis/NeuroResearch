@@ -1,6 +1,62 @@
+%% Deouble eeg
+deeg = double(data.eeg);
+
+%% basic periodogram
+trial_num = use_trials(5);
+pxx = periodogram (deeg(trial_num,:));
+plot(pxx)
+[pxx, f] = periodogram (deeg(use_trials(5),:), [], [], 1000);
+plot (f, 10*log10(pxx))
+
+%% average periodograms
+[p, f] = periodogram (deeg(use_trials(5),:), [], [], 1000);
+for i = 2:34
+    [tempp, tempf] = periodogram (deeg(use_trials(i),:), [], [], 1000);
+    p = p + tempp;
+    f = tempf;
+end
+p = p ./ 34;
+dbp = 10*log10(p);
+plot (f, dbp);
+
+%% Notch filter attempt
+
+fs = 1000;
+fo = 60;
+wo = fo/(fs/2);
+q = 25;
+bw = wo/q;
+
+number_of_harmonics = floor(1/wo);
+
+num = zeros(number_of_harmonics, 3);
+den = zeros(number_of_harmonics, 3);
+
+for i = 1:number_of_harmonics
+    [num(i, :), den(i, :)] = iirnotch(i * wo, bw);
+end 
 
 
-spectogram(data.eeg(12));
+%% filter each channel of deeg
+fdeeg = zeros (97, 638000);
+
+for i = 1:34
+    fdeeg(use_trials(i), :) = filtfilt(num(1,:), den(1,:), deeg(use_trials(i), :));
+    for j = 2:number_of_harmonics
+        fdeeg(use_trials(i), :) = filtfilt(num(j,:), den(j,:), fdeeg(use_trials(i), :));
+    end
+end
+
+%% Plot that shit
+[p, f] = periodogram (fdeeg(use_trials(1),:), [], [], 1000);
+for i = 2:34
+    [tempp, tempf] = periodogram (fdeeg(use_trials(i),:), [], [], 1000);
+    p = p + tempp;
+    f = tempf;
+end
+p = p ./ 34;
+dbp = 10*log10(p);
+plot (f, dbp);
 
 
 %% Aidan's stuff from old LoadData.m
