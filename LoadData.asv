@@ -5,23 +5,12 @@ ecog = double(data.nkdata.eeg);
 %% clean data
 
 %select bad channels
-aidan_bad = [125, 103, 97, 51];
+bad_channels = [125, 103, 97, 51];
 
 
-count = 1;
-[pxx, w] = periodogram(ecog(1, :));
-periodograms = 10*log10(pxx);
-for channel = [2:125]
-    if(~ismember(bad_channels, channel))
-       [pxx, w] = periodogram(ecog(channel, :));
-       plot(w,10*log10(pxx))
-       periodograms = periodograms + 10*log10(pxx);
-       count = count+1;
-    end
-end
 
-plot(w, periodograms);
 
+spectrogram(ecog(75, :))
 
 
 %% filter high gamma data
@@ -57,15 +46,12 @@ disp(channel)
 end
 
 %% Sudha's code
-% use trials <-- indices of trials not marked by experiemnters as
-% noisy/innacurate/technical failure
-% use_times <-- timestamps for use_trials articulations
+% use trials <-- indices of trials not marked b
 
-
-use_trials = find(data.nkdata.accuracy(:).*data.nkdata.tech(:).*data.nkdata.noise(:));
-use_times = data.nkdata.articulation(use_trials);
-data.nkdata.eeg = data.nkdata.eeg(bad_channels.common,:);
-data.nkdata.ch_names = data.nkdata.ch_names(bad_channels.common,:);
+use_trials = find(data.accuracy(:).*data.tech(:).*data.noise(:));
+use_times = data.articulation(use_trials);
+data.eeg = data.eeg(bad_channels.common,:);
+data.ch_names = data.ch_names(bad_channels.common,:);
 
 %% Get frequency vectors
 
