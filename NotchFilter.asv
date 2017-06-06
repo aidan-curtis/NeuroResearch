@@ -1,3 +1,4 @@
+%% Deouble eeg
 deeg = double(data.eeg);
 
 %% basic periodogram
@@ -20,31 +21,39 @@ plot (f, dbp);
 
 %% Notch filter attempt
 
+%sampling frequency
 fs = 1000;
+%desired harmonic to filter out
 fo = 60;
+%normalized frequency to filter out
 wo = fo/(fs/2);
-q = 35;
+%"quality"
+q = 25;
+%bandwidth equasion based on quality
 bw = wo/q;
 
+%number of times the harmonic appears in the sampling range
 number_of_harmonics = floor(1/wo);
+
 
 num = zeros(number_of_harmonics, 3);
 den = zeros(number_of_harmonics, 3);
-
 for i = 1:number_of_harmonics
     [num(i, :), den(i, :)] = iirnotch(i * wo, bw);
 end 
 
 
-%% average filtered periodogram
+%% filter each channel of deeg
 fdeeg = zeros (97, 638000);
 
-for i = 1:97
-    for j = 1:number_of_harmonics
-        fdeeg(i, :) = filtfilt(num(j,:), den(j,:), deeg(i, :));
+for i = 1:34
+    fdeeg(use_trials(i), :) = filtfilt(num(1,:), den(1,:), deeg(use_trials(i), :));
+    for j = 2:number_of_harmonics
+        fdeeg(use_trials(i), :) = filtfilt(num(j,:), den(j,:), fdeeg(use_trials(i), :));
     end
 end
 
+%% Plot that shit
 [p, f] = periodogram (fdeeg(use_trials(1),:), [], [], 1000);
 for i = 2:34
     [tempp, tempf] = periodogram (fdeeg(use_trials(i),:), [], [], 1000);
