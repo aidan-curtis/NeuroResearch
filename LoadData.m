@@ -1,6 +1,18 @@
 %% load data
 data = load('../NeuroData/ta505_datasets/ta505_auditory.mat');
+bad_channels = load('../NeuroData/ta505_datasets/ta505_bad_channels.mat');
 ecog = double(data.nkdata.eeg);
+
+%% Sudha's code
+% use trials <-- indices of trials not marked by experiemnters as
+% noisy/innacurate/technical failure
+% use_times <-- timestamps for use_trials articulations
+
+
+use_trials = find(data.nkdata.accuracy(:).*data.nkdata.tech(:).*data.nkdata.noise(:));
+use_times = data.nkdata.articulation(use_trials);
+data.nkdata.eeg = data.nkdata.eeg(bad_channels.bad_channels.common,:);
+data.nkdata.ch_names = data.nkdata.ch_names(bad_channels.bad_channels.common,:);
 
 %% clean data
 
@@ -56,16 +68,6 @@ disp('calculating vectors')
 disp(channel)
 end
 
-%% Sudha's code
-% use trials <-- indices of trials not marked by experiemnters as
-% noisy/innacurate/technical failure
-% use_times <-- timestamps for use_trials articulations
-
-
-use_trials = find(data.nkdata.accuracy(:).*data.nkdata.tech(:).*data.nkdata.noise(:));
-use_times = data.nkdata.articulation(use_trials);
-data.nkdata.eeg = data.nkdata.eeg(bad_channels.common,:);
-data.nkdata.ch_names = data.nkdata.ch_names(bad_channels.common,:);
 
 %% Get frequency vectors
 
