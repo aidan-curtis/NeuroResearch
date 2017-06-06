@@ -1,0 +1,27 @@
+%Written expectiong sections 
+%'load data' and 'sudhas code' to have run from LoadData.m
+
+spectrogram (data.
+
+%% Aidan's stuff from old LoadData.m
+% clean data
+
+%select bad channels
+aidan_bad = [125, 103, 97, 51];
+
+
+count = 1;
+[pxx, w] = periodogram(ecog(1, :));
+periodograms = 10*log10(pxx);
+for channel = [2:125]
+    if(~ismember(bad_channels, channel))
+       [pxx, w] = periodogram(ecog(channel, :));
+       plot(w,10*log10(pxx))
+       periodograms = periodograms + 10*log10(pxx);
+       count = count+1;
+    end
+end
+
+plot(w, periodograms);
+
+
