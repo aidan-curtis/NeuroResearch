@@ -15,5 +15,10 @@ bad_channels = bad_channels.bad_channels;
 use_trials = find(data.accuracy(:).*data.tech(:).*data.noise(:));
 use_times = data.articulation(use_trials);
 bad_channels.auditory
+<<<<<<< Updated upstream
 data.eeg = data.eeg(bad_channels.auditory,:);
 data.ch_names = data.ch_names(bad_channels.auditory,:);
+=======
+data.eeg = double(data.eeg(bad_channels.auditory,:));
+data.ch_names = data.ch_names(bad_channels.auditory,:);
+>>>>>>> Stashed changes
