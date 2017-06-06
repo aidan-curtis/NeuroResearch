@@ -8,6 +8,8 @@ ecog = double(data.nkdata.eeg);
 bad_channels = [125, 103, 97, 51];
 
 
+
+
 spectrogram(ecog(75, :))
 
 
