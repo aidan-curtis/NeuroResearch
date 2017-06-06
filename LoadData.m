@@ -5,12 +5,23 @@ ecog = double(data.nkdata.eeg);
 %% clean data
 
 %select bad channels
-bad_channels = [125, 103, 97, 51];
+aidan_bad = [125, 103, 97, 51];
 
 
+count = 1;
+[pxx, w] = periodogram(ecog(1, :));
+periodograms = 10*log10(pxx);
+for channel = [2:125]
+    if(~ismember(bad_channels, channel))
+       [pxx, w] = periodogram(ecog(channel, :));
+       plot(w,10*log10(pxx))
+       periodograms = periodograms + 10*log10(pxx);
+       count = count+1;
+    end
+end
 
+plot(w, periodograms);
 
-spectrogram(ecog(75, :))
 
 
 %% filter high gamma data
