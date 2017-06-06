@@ -5,6 +5,7 @@ bad_channels = load('../NeuroData/ta505_datasets/ta505_bad_channels.mat');
 
 data = data.nkdata;
 bad_channels = bad_channels.bad_channels;
+data.fs = 1000;
 
 %% Sudha's code
 % use trials <-- indices of trials not marked by experiemnters as
