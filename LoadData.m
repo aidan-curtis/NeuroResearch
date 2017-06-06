@@ -1,7 +1,10 @@
 %% load data
+clear
 data = load('../NeuroData/ta505_datasets/ta505_auditory.mat');
 bad_channels = load('../NeuroData/ta505_datasets/ta505_bad_channels.mat');
-ecog = double(data.nkdata.eeg);
+
+data = data.nkdata;
+bad_channels = bad_channels.bad_channels;
 
 %% Sudha's code
 % use trials <-- indices of trials not marked by experiemnters as
@@ -9,30 +12,39 @@ ecog = double(data.nkdata.eeg);
 % use_times <-- timestamps for use_trials articulations
 
 
-use_trials = find(data.nkdata.accuracy(:).*data.nkdata.tech(:).*data.nkdata.noise(:));
-use_times = data.nkdata.articulation(use_trials);
-data.nkdata.eeg = data.nkdata.eeg(bad_channels.bad_channels.common,:);
-data.nkdata.ch_names = data.nkdata.ch_names(bad_channels.bad_channels.common,:);
+use_trials = find(data.accuracy(:).*data.tech(:).*data.noise(:));
+use_times = data.articulation(use_trials);
+bad_channels.auditory
+data.eeg = data.eeg(bad_channels.auditory,:);
+data.ch_names = data.ch_names(bad_channels.auditory,:);
 
 %% clean data
 
 %select bad channels
-aidan_bad = [125, 103, 97, 51];
+
+
+
+[channel_size, ~] = size(data.eeg)
 
 
 count = 1;
-[pxx, w] = periodogram(ecog(1, :));
-periodograms = 10*log10(pxx);
-for channel = [2:125]
-    if(~ismember(bad_channels, channel))
-       [pxx, w] = periodogram(ecog(channel, :));
-       plot(w,10*log10(pxx))
-       periodograms = periodograms + 10*log10(pxx);
-       count = count+1;
-    end
-end
+[pxx, w] = periodogram(double(data.eeg(1, :)));
+periodograms = pxx;
 
-plot(w, periodograms);
+plot(abs(fft(double(data.eeg(1,:)))))
+figure
+periodogram(double(data.eeg(1, :)))
+% plot(w, periodograms);
+% 
+% figure;
+% for channel = [2:channel_size]
+%     [pxx, w] = periodogram(double(data.eeg(channel, :)));
+%     plot(w,10*log10(pxx))
+%     periodograms = periodograms + pxx;
+%     count = count+1;
+% end
+% 
+% plot(w, 10*log10(periodograms));
 
 
 
