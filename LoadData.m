@@ -27,4 +27,6 @@ c_data.ch_names = c_data.ch_names(bad_channels.common,:);
 
 %Determine which data to use
 % data = a_data
+% use_trials = a_use_trials
 data = c_data
+use_trials = c_use_trials
