@@ -21,6 +21,7 @@ disp('Notches Filtered');
 %{
 New/updated variables:
 data.notch_filtered_eeg created
+UPDATE data.eeg <-- data.notch_filtered_eeg
 %}
 
 
