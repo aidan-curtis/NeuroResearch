@@ -18,12 +18,10 @@
 
 %% Notch filter attempt
 
-%sampling frequency
-a_data.fs = 1000;
 %desired harmonic to filter out
 fo = 60;
 %normalized frequency to filter out
-wo = fo/(a_data.fs/2);
+wo = fo/(data.fs/2);
 %"quality"
 q = 25;
 %bandwidth equasion based on quality
@@ -46,12 +44,12 @@ clearvars den bw number_of_harmonics q wo fo;
 >>>>>>> Stashed changes
 
 %% filter each channel of deeg
-a_data.notch_filtered_eeg = double(a_data.eeg);
+data.notch_filtered_eeg = double(data.eeg);
 
 %for every use_trial, throw it through every filter
-for i = 1:length(a_use_trials)
+for i = 1:size(data.notch_filtered_eeg, 1)
     for j = 1:number_of_harmonics
-        a_data.notch_filtered_eeg(a_use_trials(i), :) = filtfilt(num(j,:), den(j,:), a_data.notch_filtered_eeg(a_use_trials(i), :));
+        data.notch_filtered_eeg(i, :) = filtfilt(num(j,:), den(j,:), data.notch_filtered_eeg(i, :));
     end
 end
 

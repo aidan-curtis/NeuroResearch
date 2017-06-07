@@ -13,20 +13,19 @@ c_data.fs  = 1000 / c_data.ms_per_sample;
 % use trials <-- indices of trials not marked by experiemnters as
 % noisy/innacurate/technical failure
 % use_times <-- timestamps for use_trials articulations
+%updates channels to ignore bad channels
 
-a_use_trials = find(a_data.accuracy(:).*a_data.tech(:).*a_data.noise(:));
-a_use_times = a_data.articulation(a_use_trials);
+a_data.use_trials = find(a_data.accuracy(:).*a_data.tech(:).*a_data.noise(:));
+a_data.use_times = a_data.articulation(a_data.use_trials);
 a_data.eeg = double(a_data.eeg(bad_channels.auditory,:));
 a_data.ch_names = a_data.ch_names(bad_channels.auditory,:);
 
-c_use_trials = find(c_data.accuracy(:).*c_data.tech(:).*c_data.noise(:));
-c_use_times = c_data.articulation(c_use_trials);
+c_data.use_trials = find(c_data.accuracy(:).*c_data.tech(:).*c_data.noise(:));
+c_data.use_times = c_data.articulation(c_data.use_trials);
 c_data.eeg = double(c_data.eeg(bad_channels.common,:));
 c_data.ch_names = c_data.ch_names(bad_channels.common,:);
 
 
 %Determine which data to use
-% data = a_data
-% use_trials = a_use_trials
-data = c_data
-use_trials = c_use_trials
+% data = a_data;
+data = c_data;
