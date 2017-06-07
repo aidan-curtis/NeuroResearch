@@ -37,12 +37,6 @@ for i = 1:number_of_harmonics
     [num(i, :), den(i, :)] = iirnotch(i * wo, bw);
 end 
 
-<<<<<<< Updated upstream
-
-=======
-clearvars den bw number_of_harmonics q wo fo;
->>>>>>> Stashed changes
-
 %% filter each channel of deeg
 data.notch_filtered_eeg = double(data.eeg);
 
