@@ -2,8 +2,8 @@
 %pairs
 
 %list of trials in which the image is either scrambled or not scrambled
-indecies_scrambled = []; 
-indecies_not_scrambled = [];
+indecies_scrambled = data.use_scramble; 
+indecies_not_scrambled = ~data.use_scramble;
 %array (trials, channels), containing power vector for the specified unit
 power_vector_array = data.E;
 
@@ -32,6 +32,8 @@ for channel = [1:size(power_vector_array, 2)]
    t_val = mean_val/(standard_deviation/sqrt(groups_size));
    t_vals(channel) = t_val;
 end
+
+disp(t_vals);
 
 clearvars mean_val standard_deviation groups t_val;
 clearvars power_vector_array indecies_scrambled indecies_not_scrambled;
