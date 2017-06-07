@@ -19,6 +19,16 @@ New/updated variables:
 deeg -- 97x638000 double -- shorthand for double(data.eeg)
 fo, wo, q, bw, number_of_harmonics -- temporary variable for filter construction
 num, den -- the filter itself
-i, j -- indecies for for loops
 fdeeg -- 97x638000 double -- the filtered version of deeg
 %}
+
+
+%Band Pass Filter High Gamma frequency
+run('FilterHighGamma.m');
+%{
+New/updated variables: filtered -- a 2D array with the same dimensions as
+the data that has filtered out everything but 70-170 Hz
+%}
+
+
+
