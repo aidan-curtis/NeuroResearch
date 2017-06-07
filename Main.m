@@ -39,7 +39,9 @@ disp('Creating power vectors...');
 run('CreatePowerVectors.m');
 disp('Power vectors created.');
 %{
-New/updated variables: ??????
+New/updated variables: 
+data.E -- power vectors
+data.use_scramble -- logical for whether or not the given trial in use_trial is scramble
 %}
 
 
