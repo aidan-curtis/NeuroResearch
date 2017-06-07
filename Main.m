@@ -34,6 +34,23 @@ New/updated variables: filtered -- a 2D array with the same dimensions as
 the data that has filtered out everything but 70-170 Hz
 %}
 
+%create power vectors
+disp('Creating power vectors...');
+run('CreatePowerVectors.m');
+disp('Power vectors created.');
+%{
+New/updated variables: ??????
+%}
 
+
+%T  test for most diagnostic nodes give a vector
+disp('Selecting Nodes...');
+run('FilterHighGamma.m');
+disp('Nodes Selected');
+%{
+New/updated variables: 
+data.good_channels -- the channel indecies of the n channels with the
+hightes t values
+%}
 
 
