@@ -2,8 +2,8 @@
 %pairs
 
 %list of trials in which the image is either scrambled or not scrambled
-indecies_scrambled = data.use_scramble; 
-indecies_not_scrambled = ~data.use_scramble;
+indecies_scrambled = find(data.use_scramble); 
+indecies_not_scrambled = find(~data.use_scramble);
 %array (trials, channels), containing power vector for the specified unit
 power_vector_array = data.E;
 
@@ -21,7 +21,7 @@ for channel = [1:size(power_vector_array, 2)]
    for i = indecies_scrambled
        for j = indecies_not_scrambled
            current = current + 1;
-           groups(current) = abs(power_vector_array(i, channel)-power_vector_array(j, channel));
+           groups(1, current) = abs(power_vector_array(i, channel)- power_vector_array(j, channel));
        end
    end
    clearvars i j current;
