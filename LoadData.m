@@ -6,7 +6,7 @@
 
 clear
 
-experiment = 'auditory'
+experiment = 'common'
 
 temp_bad_channels = load('../NeuroData/ta505_datasets/ta505_bad_channels.mat');
 bad_channels = temp_bad_channels.bad_channels;
