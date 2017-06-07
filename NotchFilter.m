@@ -15,8 +15,8 @@ number_of_harmonics = floor(1/wo);
 %make the filters
 num = zeros(number_of_harmonics, 3);
 den = zeros(number_of_harmonics, 3);
-for i = 1:number_of_harmonics
-    [num(i, :), den(i, :)] = iirnotch(i * wo, bw);
+for filter = 1:number_of_harmonics
+    [num(filter, :), den(filter, :)] = iirnotch(filter * wo, bw);
 end 
 disp('notch filters made');
 %% filter each channel of deeg
@@ -24,15 +24,17 @@ disp('applying notch filters...');
 data.notch_filtered_eeg = double(data.eeg);
 
 %for every use_trial, throw it through every filter
-for i = 1:size(data.notch_filtered_eeg, 1)
-    for j = 1:number_of_harmonics
-        data.notch_filtered_eeg(i, :) = filtfilt(num(j,:), den(j,:), data.notch_filtered_eeg(i, :));
+for channel = 1:size(data.notch_filtered_eeg, 1)
+    for filter = 1:number_of_harmonics
+        data.notch_filtered_eeg(channel, :) = filtfilt(num(filter,:), den(filter,:), data.notch_filtered_eeg(channel, :));
     end
 end
 
+data.eeg = data.notch_filtered_eeg;
+
 clearvars num den bw number_of_harmonics q wo fo;
-clear i
-clear j
+clear channel
+clear filter
 disp('notch filters applies');
 %% Plot that shit
 % disp('plotting...');
