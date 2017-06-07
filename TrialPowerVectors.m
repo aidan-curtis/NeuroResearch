@@ -4,13 +4,13 @@ for channel = [1: size(data.eeg,1)]
     window_size = 50;
     et = size(filtered, 2);
     
-    for trial = [1:(et/window_size)]
+    for i = [1:(et/window_size)]
         %get power of window
         log_power = 0;
         for j = [1:window_size]
-            log_power = log_power + (filtered(channel, (trial-1)*window_size+j))^2;
+            log_power = log_power + (filtered(channel, (i-1)*window_size+j))^2;
         end
-        E(trial, channel) = log10(log_power);
+        E(i, channel) = log10(log_power);
     end
     
 end
