@@ -31,6 +31,7 @@ for channel = [1:size(power_vector_array, 2)]
    standard_deviation = std(groups(:));
    t_val = mean_val/(standard_deviation/sqrt(groups_size));
    t_vals(channel) = t_val;
+
 end
 
 disp(t_vals);
