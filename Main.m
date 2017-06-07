@@ -25,13 +25,14 @@ data.notch_filtered_eeg created
 
 
 %Band Pass Filter High Gamma frequency
-disp('Filtering High Gamma');
+disp('Filtering High Gamma...');
 run('FilterHighGamma.m');
-disp('High Gamma Filtered');
+disp('High Gamma Filtered.');
 %{
 New/updated variables: filtered -- a 2D array with the same dimensions as
 the data that has filtered out everything but 70-170 Hz
 %}
+
 
 
 

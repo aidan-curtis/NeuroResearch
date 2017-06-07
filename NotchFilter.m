@@ -18,11 +18,9 @@ den = zeros(number_of_harmonics, 3);
 for filter = 1:number_of_harmonics
     [num(filter, :), den(filter, :)] = iirnotch(filter * wo, bw);
 end 
-<<<<<<< HEAD
 
-=======
 disp('notch filters made');
->>>>>>> origin/dorandoran
+
 %% filter each channel of deeg
 disp('applying notch filters...');
 data.notch_filtered_eeg = double(data.eeg);
