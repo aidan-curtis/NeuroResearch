@@ -23,3 +23,8 @@ c_use_trials = find(c_data.accuracy(:).*c_data.tech(:).*c_data.noise(:));
 c_use_times = c_data.articulation(c_use_trials);
 c_data.eeg = double(c_data.eeg(bad_channels.common,:));
 c_data.ch_names = c_data.ch_names(bad_channels.common,:);
+
+
+%Determine which data to use
+% data = a_data
+data = c_data
