@@ -1,23 +1,5 @@
-%% basic periodogram
-% trial_num = use_trials(5);
-% pxx = periodogram (deeg(trial_num,:));
-% plot(pxx)
-% [pxx, f] = periodogram (deeg(use_trials(5),:), [], [], 1000);
-% plot (f, 10*log10(pxx))
-
-%% average periodograms
-% [p, f] = periodogram (deeg(use_trials(5),:), [], [], 1000);
-% for i = 2:34
-%     [tempp, tempf] = periodogram (deeg(use_trials(i),:), [], [], 1000);
-%     p = p + tempp;
-%     f = tempf;
-% end
-% p = p ./ 34;
-% dbp = 10*log10(p);
-% plot (f, dbp);
-
 %% Notch filter attempt
-
+disp('making notch filters...');
 %desired harmonic to filter out
 fo = 60;
 %normalized frequency to filter out
@@ -36,8 +18,9 @@ den = zeros(number_of_harmonics, 3);
 for i = 1:number_of_harmonics
     [num(i, :), den(i, :)] = iirnotch(i * wo, bw);
 end 
-
+disp('notch filters made');
 %% filter each channel of deeg
+disp('applying notch filters...');
 data.notch_filtered_eeg = double(data.eeg);
 
 %for every use_trial, throw it through every filter
@@ -50,14 +33,16 @@ end
 clearvars num den bw number_of_harmonics q wo fo;
 clear i
 clear j
-
+disp('notch filters applies');
 %% Plot that shit
-% [p, f] = periodogram (a_data.notch_filtered_eeg(a_use_trials(1),:), [], [], 1000);
-% for i = 2:length(a_use_trials)
-%     [tempp, tempf] = periodogram (a_data.notch_filtered_eeg(a_use_trials(i),:), [], [], 1000);
+% disp('plotting...');
+% [p, f] = periodogram (data.notch_filtered_eeg(1,:), [], [], 1000);
+% for i = 2:size(data.notch_filtered_eeg, 1)
+%     [tempp, tempf] = periodogram (data.notch_filtered_eeg(i,:), [], [], 1000);
 %     p = p + tempp;
 %     f = tempf;
 % end
-% p = p ./ length(a_use_trials);
+% p = p ./ size(data.notch_filtered_eeg, 1);
 % dbp = 10*log10(p);
 % plot (f, dbp);
+% disp('plotted');
