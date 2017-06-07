@@ -1,27 +1,27 @@
 %% T test
 %pairs
 
-%list of trials in which the image is either scrambled or not scrambled
-indecies_scrambled = find(data.use_scramble); 
-indecies_not_scrambled = find(~data.use_scramble);
-%array (trials, channels), containing power vector for the specified unit
-power_vector_array = data.E;
+%list of trials for either case
+indecies_case_a = find(data.use_scramble); 
+indecies_case_b = find(~data.use_scramble);
+%array (trials, channels), containing feature vector for the specified unit
+one_dim_feature_vector_array = data.E;
 
-t_vals = zeros(size(power_vector_array, 2), 1);
+t_vals = zeros(size(one_dim_feature_vector_array, 2), 1);
 
-size_not_scr = size(indecies_not_scrambled, 2);
-size_scr = size(indecies_scrambled, 2);
-groups_size = size_scr*size_not_scr;
+size_case_b = size(indecies_case_b, 2);
+size_case_a = size(indecies_case_a, 2);
+groups_size = size_case_a*size_case_b;
 
-for channel = [1:size(power_vector_array, 2)]
+for channel = [1:size(one_dim_feature_vector_array, 2)]
    groups = zeros(1, groups_size);
    %groups is a list of the differences in power between any possible pair of
-   %scrambled vs non scrambles trials in each channel
+   %case b vs case a trials in each channel
    current = 0;
-   for i = indecies_scrambled
-       for j = indecies_not_scrambled
+   for i = indecies_case_a
+       for j = indecies_case_b
            current = current + 1;
-           groups(1, current) = abs(power_vector_array(i, channel)- power_vector_array(j, channel));
+           groups(1, current) = abs(one_dim_feature_vector_array(i, channel)- one_dim_feature_vector_array(j, channel));
        end
    end
    clearvars i j current;
