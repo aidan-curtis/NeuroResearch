@@ -1,6 +1,8 @@
 %Load the data
 % Data should be stored in '../NeuroData/ta505_datasets/'
+disp('Loading data...')
 run('LoadData.m');
+disp('Data Loaded');
 %{
 New/updated variables:
 bad_channels -- struct -- the contents of the bad_channels.mat file
@@ -13,18 +15,19 @@ UPDATED: data.ch_names -- updated accordingly
 %}
 
 %Filter out harmonics of 60 Hz because AC
+disp('Filtering notches...');
 run('NotchFilter.m');
+disp('Notches Filtered');
 %{
 New/updated variables:
-deeg -- 97x638000 double -- shorthand for double(data.eeg)
-fo, wo, q, bw, number_of_harmonics -- temporary variable for filter construction
-num, den -- the filter itself
-fdeeg -- 97x638000 double -- the filtered version of deeg
+data.notch_filtered_eeg created
 %}
 
 
 %Band Pass Filter High Gamma frequency
+disp('Filtering High Gamma');
 run('FilterHighGamma.m');
+disp('High Gamma Filtered');
 %{
 New/updated variables: filtered -- a 2D array with the same dimensions as
 the data that has filtered out everything but 70-170 Hz
