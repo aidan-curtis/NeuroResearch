@@ -8,7 +8,6 @@ for trial_val = transpose(data.use_trials)
     trial_num = trial_num+1;
     window_start = data.pulse_on(trial_val);
     window_end = data.articulation(trial_val);
-    trial = 1;
     for channel = [1: size(data.filtered,1)]
         log_power = 0;
         total = 0;
