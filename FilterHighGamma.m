@@ -10,6 +10,6 @@ for channel = [1: size(data.eeg,1)]
     size(filter(b, 1, data.eeg(channel, start_amt:end_amt)));
     filtered(channel, :) = filter(b, 1, data.eeg(channel, start_amt:end_amt));
 end
-%%
+%% Graph
 
 periodogram(filtered(1,:))
