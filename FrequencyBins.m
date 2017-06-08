@@ -20,23 +20,23 @@ for trial_val = transpose(data.use_trials)
     window_end = data.articulation(trial_val);
 
     for channel = [1: size(data.filtered, 1)] 
-     for center_f = [1:size(centers,2)]
+        for center_f = [1:size(centers,2)]
         bottom = centers(center_f) - sizes(center_f)/2;
         top = centers(center_f) + sizes(center_f)/2;
-        
+
         b = fir1(4000, [bottom*2/data.fs, top*2/data.fs]);
         temp = filter(b, 1, data.filtered(channel, bin_window_start:bin_window_start+bin_window_size));
-        
+
         log_power = 0;
         total = 0;
         for j = [1:size(temp, 2)];
             log_power = log_power + (temp(:,j))^2;
             total = total + 1;
         end
-   
+
         F(channel, trial_num, center_f) = log_power/total;
 
-     end
+        end
     
 
     end
