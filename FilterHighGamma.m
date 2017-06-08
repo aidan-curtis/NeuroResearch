@@ -1,10 +1,13 @@
 %% filter high gamma data
 
+HIGH_GAMMA_LOWER = 70;
+HIGH_GAMMA_UPPER = 110;
+
 start_amt = 1;
 end_amt = size(data.eeg,2);
 
 data.filtered = zeros(size(data.eeg,1), size(data.eeg,2));
-b = fir1(4000,[2*70/1000, 2*170/1000]);
+b = fir1(4000,[2*HIGH_GAMMA_LOWER/1000, 2*HIGH_GAMMA_UPPER/1000]);
 H = freqz(b,1,1000);
 
 count = 0;
@@ -19,6 +22,7 @@ for channel = [1: size(data.eeg,1)]
     end  
 end
 fprintf('\n');
+
 %% Graph
 
 periodogram(data.filtered(1,:))

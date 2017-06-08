@@ -42,11 +42,12 @@ clearvars group_size size_scr size_not_scr;
 %% choose top n channels
 
 %CHANGE ME
-channels_to_choose = 10;
+channels_to_choose = 100;
 
 [value, index] = sort(t_vals(:), 'descend');
 best_channels = index(1:channels_to_choose);
 
 data.good_channels = best_channels;
+
 
 

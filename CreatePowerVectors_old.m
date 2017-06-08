@@ -1,14 +1,13 @@
   
 %create window for trial: ONLY USE_TRIALS
-clear E;
+
 trial_num = 0;
 
 for trial_val = transpose(data.use_trials)
-    
+
     trial_num = trial_num+1;
     window_start = data.pulse_on(trial_val);
-    window_end = data.articulation(trial_val);
-
+    window_end = data.pulse_on(trial_val)+(data.articulation(trial_val)-data.pulse_on(trial_val))/2;
     for channel = [1: size(data.filtered,1)]
         log_power = 0;
         total = 0;
