@@ -1,4 +1,4 @@
-%Load the data
+%% Load the data
 % Data should be stored in '../NeuroData/ta505_datasets/'
 disp('Loading data...')
 run('LoadData.m');
@@ -14,7 +14,7 @@ UPDATED: data.eeg -- values labeled bad in bad_channels removed
 UPDATED: data.ch_names -- updated accordingly
 %}
 
-%Filter out harmonics of 60 Hz because AC
+%% Filter out harmonics of 60 Hz because AC
 disp('Filtering notches...');
 run('NotchFilter.m');
 disp('Notches Filtered');
@@ -25,7 +25,7 @@ UPDATE data.eeg <-- data.notch_filtered_eeg
 %}
 
 
-%Band Pass Filter High Gamma frequency
+%% Band Pass Filter High Gamma frequency
 disp('Filtering High Gamma...');
 run('FilterHighGamma.m');
 disp('High Gamma Filtered.');
@@ -34,7 +34,7 @@ New/updated variables: filtered -- a 2D array with the same dimensions as
 the data that has filtered out everything but 70-170 Hz
 %}
 
-%create power vectors
+%% create power vectors
 disp('Creating power vectors...');
 run('CreatePowerVectors.m');
 disp('Power vectors created.');
@@ -45,7 +45,7 @@ data.use_scramble -- logical for whether or not the given trial in use_trial is 
 %}
 
 
-%T  test for most diagnostic nodes give a vector
+%% T  test for most diagnostic nodes give a vector
 disp('Selecting Nodes...');
 run('NodeSelection.m');
 disp('Nodes Selected');
