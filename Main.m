@@ -47,7 +47,7 @@ data.use_scramble -- logical for whether or not the given trial in use_trial is 
 
 %T  test for most diagnostic nodes give a vector
 disp('Selecting Nodes...');
-run('FilterHighGamma.m');
+run('NodeSelection.m');
 disp('Nodes Selected');
 %{
 New/updated variables: 
