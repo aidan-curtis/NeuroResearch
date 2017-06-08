@@ -1,7 +1,7 @@
 %% filter high gamma data
 
 HIGH_GAMMA_LOWER = 70;
-HIGH_GAMMA_UPPER = 110;
+HIGH_GAMMA_UPPER = 150;
 
 start_amt = 1;
 end_amt = size(data.eeg,2);

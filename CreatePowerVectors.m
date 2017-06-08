@@ -16,7 +16,7 @@ for trial_val = transpose(data.use_trials)
             log_power = log_power + (data.filtered(channel, j))^2;
             total = total + 1;
         end
-        E(trial_num, channel) = log10(log_power/total);
+        E(trial_num, channel) = log_power/total;
     end
 end
 

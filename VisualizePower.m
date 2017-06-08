@@ -1,6 +1,8 @@
 src = [];
 nsrc = [];
-for channel = data.good_channels
+
+
+for channel = data.channels
       src = [src, sum(E(data.use_scramble, channel))]
       nsrc = [nsrc, sum(E(~data.use_scramble, channel))]
 end
