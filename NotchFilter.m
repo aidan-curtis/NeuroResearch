@@ -18,7 +18,9 @@ den = zeros(number_of_harmonics, 3);
 for filter = 1:number_of_harmonics
     [num(filter, :), den(filter, :)] = iirnotch(filter * wo, bw);
 end 
+
 disp('notch filters made');
+
 %% filter each channel of deeg
 disp('applying notch filters...');
 data.notch_filtered_eeg = double(data.eeg);
@@ -26,8 +28,10 @@ data.notch_filtered_eeg = double(data.eeg);
 %for every use_trial, throw it through every filter
 for channel = 1:size(data.notch_filtered_eeg, 1)
     for filter = 1:number_of_harmonics
+        fprintf('.');
         data.notch_filtered_eeg(channel, :) = filtfilt(num(filter,:), den(filter,:), data.notch_filtered_eeg(channel, :));
     end
+    fprintf('\n');
 end
 
 data.eeg = data.notch_filtered_eeg;
