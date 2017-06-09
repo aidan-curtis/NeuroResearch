@@ -1,5 +1,5 @@
-WINDOW_LENGTH = 2500;
-MS_BETWEEN_WINDOWS = 1000;
+WINDOW_LENGTH = 2048;
+MS_BETWEEN_WINDOWS = 1024;
 
 number_of_windows = floor((size(data.filtered, 2) - WINDOW_LENGTH)/MS_BETWEEN_WINDOWS);
 
