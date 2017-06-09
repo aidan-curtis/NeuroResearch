@@ -11,7 +11,7 @@ model_response = transpose(tmpl(model_logical+1));
 options = optimset('maxiter',100000);
 mdl = svmtrain(model_array(1:200,:),model_response(1:200), 'Kernel_Function','linear', 'SMO_OPTS', options, 'showplot', true);
 
-classification = svmclassify(mdl,model_array(201:end, :), 'showplot', false)
+classification = svmclassify(mdl,model_array(201:end, :), 'showplot', true)
 
 total = 200
 success = 0;
