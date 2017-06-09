@@ -34,6 +34,7 @@ for channel = 1:size(data.notch_filtered_eeg, 1)
     fprintf('\n');
 end
 
+
 data.eeg = data.notch_filtered_eeg;
 
 clearvars num den bw number_of_harmonics q wo fo;
