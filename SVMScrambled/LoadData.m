@@ -8,11 +8,11 @@ clear
 
 experiment = 'common'
 
-temp_bad_channels = load('../NeuroData/ta505_datasets/ta505_bad_channels.mat');
+temp_bad_channels = load('../../NeuroData/ta505_datasets/ta505_bad_channels.mat');
 bad_channels = temp_bad_channels.bad_channels;
 
 if(strcmp(experiment, 'auditory'))
-    temp_data = load('../NeuroData/ta505_datasets/ta505_auditory.mat');
+    temp_data = load('../../NeuroData/ta505_datasets/ta505_auditory.mat');
     data = temp_data.nkdata;
     data.fs  = 1000 / data.ms_per_sample;
     data.use_trials = find(data.accuracy(:).*data.tech(:).*data.noise(:));
@@ -22,7 +22,7 @@ if(strcmp(experiment, 'auditory'))
 end
 
 if(strcmp(experiment, 'common'))
-    temp_data = load('../NeuroData/ta505_datasets/ta505_common.mat');
+    temp_data = load('../../NeuroData/ta505_datasets/ta505_common.mat');
     data = temp_data.nkdata;
     data.fs  = 1000 / data.ms_per_sample;
     data.use_trials = find(data.accuracy(:).*data.tech(:).*data.noise(:));
