@@ -5,6 +5,7 @@ temporal_size = 500;
 start_time = 60000;
 end_time = start_time+20000;
 t = 0
+
 for window_start = [start_time:temporal_size:end_time]
     t = t+1
     count = 0;
@@ -22,6 +23,7 @@ for window_start = [start_time:temporal_size:end_time]
             fprintf('\n')
         end
     end
+    
 end
 
 %% getting graph
@@ -53,8 +55,6 @@ filename = './../NeuroData/ta505_datasets/ta505_common.wav';
 % sound(y(8000*(60+2.5):8000*(85-2.5)), Fs)
 
     movie( images,1, 2)
-
-
 
 %% Play sound
 
