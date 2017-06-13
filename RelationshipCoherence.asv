@@ -75,13 +75,11 @@ for r1 = 1:length(region_shortname)
 end
 
 %%
-index = 0;
+ct = []
 for i=cross_regional_coherence
-    index = index+1;
+    
     for window=size(i,3)
-        disp(index);
-        disp(mean(mean(i{:,:,window})));
-        ct(index, :) = mean(mean(i{:,:,window}));
+        disp(window);
     end
     disp ('-------------');
     
