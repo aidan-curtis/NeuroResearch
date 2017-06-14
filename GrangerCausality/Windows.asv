@@ -1,9 +1,0 @@
-WINDOW_SIZE = 1000;
-WINDOW_START_DELAY = 50;
-SECTION_TO_WINDOW = [60 * 1000, 2 * 60 * 1000];
-%SECTION_TO_WINDOW = [1, size(data.eeg, 2);
-number_of_windows = ((SECTION_TO_WINDOW(2)-(WINDOW_SIZE - WINDOW_START_DELAY)) - SECTION_TO_WINDOW(1))/WINDOW_START_DELAY;
-
-for window = 1:number_of_windows
-    for channel = 1:size(data.eeg
-        windowed_eeg(channel, window

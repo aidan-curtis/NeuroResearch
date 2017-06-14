@@ -12,7 +12,7 @@ for order = 1:ORDER_OF_DIFFERENCES_TO_CALC
     end
 end
 
-%% differences across channels (including within channels)
+%% differences across all channels (including within channels)
 %channel_1 is the current channel
 %channel_2 is the "causing" channel
 ORDER_OF_DIFFERENCES_TO_CALC = 1;
@@ -29,6 +29,31 @@ for order = 1:ORDER_OF_DIFFERENCES_TO_CALC
                     raw_cross_differences(order, channel_1, channel_2, :, time) = windowed_eeg(channel_1,:,time) - windowed_eeg(channel_2,:,(time - order));
                 else
                     raw_cross_differences(order, channel_1, channel_2, :, time) = windowed_eeg(channel_1,:,time);
+                end
+            end
+
+        end
+    end
+end
+
+%% differences across close channels (including within channels)
+%channel_1 is the current channel
+%channel_2 is the "causing" channel
+ORDER_OF_DIFFERENCES_TO_CALC = 1;
+DIAMETER_OF_CHANNEL_SEARCH = 3;
+
+near_cross_differences = zeros(ORDER_OF_DIFFERENCES_TO_CALC, size(windowed_eeg,1) - (2 * DIAMETER_OF_CHANNEL_SEARCH),(2 * DIAMETER_OF_CHANNEL_SEARCH)+1,size(windowed_eeg,2),size(windowed_eeg,3));
+
+for order = 1:ORDER_OF_DIFFERENCES_TO_CALC
+    for channel_1 = DIAMETER_OF_CHANNEL_SEARCH + 1 : size(windowed_eeg,1) - (DIAMETER_OF_CHANNEL_SEARCH+1)
+        fprintf('---------ch1 --> %i---------\n', channel_1);
+        for channel_2 = channel_1 - DIAMETER_OF_CHANNEL_SEARCH: channel_1 + DIAMETER_OF_CHANNEL_SEARCH
+            fprintf('ch2 --> %i\n', channel_2);
+            for time = 1:size(windowed_eeg,3)
+                if time > order
+                    near_cross_differences(order, channel_1, channel_2, :, time) = windowed_eeg(channel_1,:,time) - windowed_eeg(channel_2,:,(time - order));
+                else
+                    near_cross_differences(order, channel_1, channel_2, :, time) = windowed_eeg(channel_1,:,time);
                 end
             end
 
