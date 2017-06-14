@@ -23,7 +23,7 @@ disp('notch filters made');
 
 %% filter each channel of deeg
 disp('applying notch filters...');
-data.notch_filtered_eeg = double(data.eeg);
+data.notch_filtered_eeg = double(data.car);
 
 %for every use_trial, throw it through every filter
 for channel = 1:size(data.notch_filtered_eeg, 1)

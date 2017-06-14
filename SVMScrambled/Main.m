@@ -14,6 +14,13 @@ UPDATED: data.eeg -- values labeled bad in bad_channels removed
 UPDATED: data.ch_names -- updated accordingly
 %}
 
+
+%CAR Filtering
+disp('CAR filtering...');
+run('CAR.m');
+disp('CAR filtered');
+
+
 %Filter out harmonics of 60 Hz because AC
 disp('Filtering notches...');
 run('NotchFilter.m');

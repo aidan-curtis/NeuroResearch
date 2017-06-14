@@ -3,7 +3,7 @@ count = 0;
 window_size = 2500;
 temporal_size = 500;
 start_time = 60000;
-end_time = start_time+20000;
+end_time = start_time+10000;
 t = 0
 
 for window_start = [start_time:temporal_size:end_time]
@@ -11,7 +11,7 @@ for window_start = [start_time:temporal_size:end_time]
     count = 0;
     for i = 1:size(data.eeg,1)
         for j = i:size(data.eeg,1)
-            msc = mscohere(data.eeg(i, window_start:window_start+window_size),data.eeg(j, window_start:window_start+window_size),257, 129, [70:300]);
+            msc = mscohere(data.eeg(i, window_start:window_start+window_size),data.eeg(j, window_start:window_start+window_size),257, 129, [70:300], 1000);
             msc_mean = mean(msc(:));
             coherency_matrix(i, j, t) = msc_mean;
             coherency_matrix(j, i, t) = msc_mean;
@@ -22,10 +22,8 @@ for window_start = [start_time:temporal_size:end_time]
             count = 0;
             fprintf('\n')
         end
-    end
-    
+    end  
 end
-
 %% getting graph
 
 % A = coherency_matrix
@@ -43,8 +41,9 @@ end
 %         end
 %     end
 % end
+ 
 
-for image_num = [1:41]
+for image_num = [1:21]
     imagesc(coherency_matrix(:,:,image_num));
     images(image_num) = getframe;
 end
@@ -54,7 +53,7 @@ filename = './../NeuroData/ta505_datasets/ta505_common.wav';
 [y, Fs] = audioread(filename);
 % sound(y(8000*(60+2.5):8000*(85-2.5)), Fs)
 
-    movie( images,1, 2)
+movie( images,1, 5)
 
 %% Play sound
 
@@ -72,3 +71,31 @@ c = centrality(g, 'eigenvector', 'importance', importance_vector)
 
 
 
+%% Animating coherence of one pair
+clear images
+i = 10
+j = 12
+ii = 10
+jj = 58
+start_time = 60000;
+end_time = start_time+10000;
+window_size = 1000;
+temporal_size = 50;
+image_num = 0;
+% for window_start = [start_time:temporal_size:end_time]
+    image_num = image_num+1
+%     [cxy,w] = mscohere(data.eeg(i, window_start:window_start+window_size),data.eeg(j, window_start:window_start+window_size),257, 129, [0:30]);
+%      [cxy2,w2] = mscohere(data.eeg(ii, window_start:window_start+window_size),data.eeg(jj, window_start:window_start+window_size),257, 129, [0:30]);
+
+    [cxy,w] = mscohere(data.eeg(i, 1:end),data.eeg(j, 1:end),2048, 1024, [0:300], 1000);
+     [cxy2,w2] = mscohere(data.eeg(ii, 1:end),data.eeg(jj, 1:end),2048, 1024, [0:300], 1000);
+    hold off
+     plot(w, cxy)
+    hold on
+    plot(w2, cxy2)
+%     images(image_num) = getframe;
+% end
+
+%% Play movie
+
+movie( images,1, 20)
