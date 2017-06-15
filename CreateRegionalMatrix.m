@@ -1,3 +1,7 @@
+%% create regional coherence from large coherence matrix
+
+
+
 %% mean over time
 region_index = 0;
 for regional_cell = regional_coherence

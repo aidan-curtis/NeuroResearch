@@ -42,14 +42,14 @@ clear channel
 clear filter
 disp('notch filters applies');
 %% Plot that shit
-% disp('plotting...');
-% [p, f] = periodogram (data.notch_filtered_eeg(1,:), [], [], 1000);
-% for i = 2:size(data.notch_filtered_eeg, 1)
-%     [tempp, tempf] = periodogram (data.notch_filtered_eeg(i,:), [], [], 1000);
-%     p = p + tempp;
-%     f = tempf;
-% end
-% p = p ./ size(data.notch_filtered_eeg, 1);
-% dbp = 10*log10(p);
-% plot (f, dbp);
-% disp('plotted');
+disp('plotting...');
+[p, f] = periodogram (data.notch_filtered_eeg(1,:), [], [], 1000);
+for i = 2:size(data.notch_filtered_eeg, 1)
+    [tempp, tempf] = periodogram (data.notch_filtered_eeg(i,:), [], [], 1000);
+    p = p + tempp;
+    f = tempf;
+end
+p = p ./ size(data.notch_filtered_eeg, 1);
+dbp = 10*log10(p);
+plot (f, dbp);
+disp('plotted');
