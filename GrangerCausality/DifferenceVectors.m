@@ -31,7 +31,6 @@ for order = 1:ORDER_OF_DIFFERENCES_TO_CALC
                     raw_cross_differences(order, channel_1, channel_2, :, time) = windowed_eeg(channel_1,:,time);
                 end
             end
-
         end
     end
 end

@@ -44,13 +44,11 @@ end
 %         end
 %     end
 % end
- 
 
 for image_num = [1:401]
     imagesc(coherency_matrix(:,:,image_num));
     images(image_num) = getframe;
 end
-
 
 %% Filter
 clear coh_filtered

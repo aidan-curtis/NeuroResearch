@@ -20,8 +20,6 @@ START_TIME = 60000;
 END_TIME = START_TIME+20000;
 
 for region = regions'
-    
-    
     region_index = region_index+1;
     fprintf('\n')
     fprintf('Calculating coherency for %s', region_name{region_index})
@@ -30,6 +28,7 @@ for region = regions'
     regional_coherence(region_index, :) = zeros(size(coherency_matrix, 3),1);
     count = 0;
     t = 0;
+    
     for time = [1:size(coherency_matrix, 3)]
         fprintf('\n');
         t = t+1;
@@ -42,4 +41,5 @@ for region = 1:9
     plot(regional_coherence(region, :))
     hold on
 end
+
 legend(region_name)

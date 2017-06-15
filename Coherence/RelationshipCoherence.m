@@ -28,13 +28,12 @@ end
 region_index = 0;
 
 %%
-
 region_index = 0;
 
-WINDOW_SIZE = 2500;
-TIME_SIZE = 500;
-START_TIME = 60000;
-END_TIME = START_TIME+20000;
+WINDOW_SIZE = 1000;
+TIME_SIZE = 50;
+START_TIME = data.pulse_on(6);
+END_TIME = data.pulse_on(7);
 
 for r1 = 1:length(region_shortname)
     r1_size = regions(r1,2) - regions(r1, 1) + 1;
@@ -55,7 +54,7 @@ for r1 = 1:length(region_shortname)
             count = 0;
             for r1_channel = 1:r1_size
                 for r2_channel= r1_channel:r2_size
-                    msc = mscohere(data.eeg((regions(r1,1) + r1_channel) - 1,window_start:window_start+WINDOW_SIZE),  data.eeg((regions(r2, 1) + r2_channel) - 1,window_start:window_start+WINDOW_SIZE),  257,  129,  [70:300]);
+                    msc = mscohere(data.eeg((regions(r1,1) + r1_channel) - 1,window_start:window_start+WINDOW_SIZE),  data.eeg((regions(r2, 1) + r2_channel) - 1,window_start:window_start+WINDOW_SIZE),  257,  129,  [70:300], 1000);
                     msc_mean = mean(msc(:));
                     coh(r1_channel, r2_channel, window) = msc_mean;
                     coh(r2_channel, r1_channel, window) = msc_mean;
@@ -75,14 +74,25 @@ for r1 = 1:length(region_shortname)
 end
 
 %%
+hold off;
 index = 0;
+included_names = []
 for i=cross_regional_coherence
     index = index+1;
     for window=size(i,3)
         disp(index);
         disp(mean(mean(i{:,:,window})));
-        ct(index, :) = mean(mean(i{:,:,window}));
+        ct(index, :) = mean(mean(i{:,:,window})); 
     end
+    if(max(ct(index, :)) < 0.21)
+        plot(ct(index, :))
+        included_names = [included_names cross_region_name(index)]
+        hold on;
+    end
+
     disp ('-------------');
     
 end
+
+legend(included_names)
+
