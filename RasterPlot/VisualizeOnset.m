@@ -7,9 +7,10 @@ count = count +1
 subplot(2,1,1)
 plot(mean_across_trials(count,:))
 subplot(2,1,2)
-colormap('jet')
-imagesc(reshape(trial_z_score(count,:,:),[size(trial_z_score,2) TRIAL_LENGTH]));
-
+%colormap('jet')
+%imagesc(reshape(trial_z_score(count,:,:),[size(trial_z_score,2) TRIAL_LENGTH]));
+plot(abs(fft(mean_across_trials(count,:))));
+ylim([0 100])
 %%
 %VERY BIASED list of channels that dont look like noise
 wave_channels = [8, 9, 29, 30, 31, 32, 33, 34, 35, 42, 43, 44, 48, 49, 50, 51, 52, 53, 57, 58, 59, 60, 76, 78, 79, 80, 81, 84, 85 82, 83, 96, 97, 98, 99, 100, 104, 107];
