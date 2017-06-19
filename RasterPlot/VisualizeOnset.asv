@@ -1,0 +1,15 @@
+for channel = sorted_CL_indices'
+    mean_across_trials(channel, :) = mean(trial_z_score(channel, :, :).^2, 2);
+end
+
+%%
+count = count +1
+subplot(2,1,1)
+plot(mean_across_trials(count,:))
+subplot(2,1,2)
+colormap('jet')
+imagesc(reshape(trial_z_score(count,:,:),[size(trial_z_score,2) TRIAL_LENGTH]));
+
+%%
+%VERY BIASED list of channels that kinda looked like -----
+wave_channels = [8, 9, 29, 30, 31, 32, 33, 34, 35, 42, 43, 44, 48, 49, 50, 51, 52, 53, 57, 58, 59, 60, 76
