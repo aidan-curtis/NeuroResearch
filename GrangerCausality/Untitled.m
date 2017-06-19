@@ -1,20 +1,20 @@
 %% VAR with channel's K nearest neigbors
 
-DIAMETER_TO_PAIR_WITH = 1;
-LAG = 3;
 
-channels_per_model = (2 * DIAMETER_TO_PAIR_WITH) + 1;
-base_model = varm(channels_per_model, LAG);
+ORDER = 3;
+channels_per_model = 2;
+base_model = varm(channels_per_model, ORDER);
 
 var_models = cell(size(windowed_eeg, 1) - (channels_per_model - 1),size(windowed_eeg,2));
-model_count = 0;yy
+model_count = 0;
 
-for center_channel = DIAMETER_TO_PAIR_WITH + 1 : size(windowed_eeg, 1) - (DIAMETER_TO_PAIR_WITH + 1)
+for center_channel = 1 : size(windowed_eeg, 1) - 1
     model_count = model_count + 1;
     for window = 1:size(windowed_eeg,2)
-        channel_range = center_channel - DIAMETER_TO_PAIR_WITH: center_channel + DIAMETER_TO_PAIR_WITH;
+        channel_range = center_channel: center_channel+1;
         var_models{model_count, window} = estimate(base_model, reshape(windowed_eeg(channel_range, window, :), [size(windowed_eeg, 3),channels_per_model]));
     end
+    fprintf('.')
 end
 
 %%

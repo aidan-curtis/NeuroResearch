@@ -136,3 +136,34 @@ plot(coht_filtered_u)
 %% Play movie
 
 movie( images,1, 20)
+
+
+
+%% Average Coherence Over entire intervals
+t = 0
+full_coherency_matrix = zeros(size(data.eeg,1), size(data.eeg,1), size(data.use_trials,1)-1);
+for trial = data.use_trials(11)'
+    
+    t = t+1
+    if(t ~=  size(data.use_trials,1))
+    count = 0;
+    for i = 1:size(data.eeg,1)
+        for j = i:size(data.eeg,1)
+            msc = mscohere(data.eeg(i, data.pulse_on(trial):data.pulse_on(trial+1)),data.eeg(j, data.pulse_on(trial):data.pulse_on(trial+1)),256, 128, [0:50], 1000);
+            msc_mean = mean(msc(:));
+            full_coherency_matrix(i, j, t) = msc_mean;
+            full_coherency_matrix(j, i, t) = msc_mean;
+        end
+        fprintf('.')
+        count = count + 1;
+        if(count == 10)
+            count = 0;
+            fprintf('\n')
+        end
+    end  
+    end
+end
+
+%% Visualize total coherence
+
+
