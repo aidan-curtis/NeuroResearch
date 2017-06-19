@@ -6,5 +6,3 @@ for channel = 1:size(trial_data, 1)
         trial_z_score(channel, trial, :) = (trial_data(channel, trial, :) - mean_power) / variance;
     end
 end
-%%
-h = heatmap(reshape(trial_z_score(7, :, 1001:2000), [247 1000]), 'colormap', colormap('parula'), 'GridVisible', 'off')
