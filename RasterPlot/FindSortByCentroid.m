@@ -9,11 +9,7 @@ for channel = 1:size(target_data, 1)
         for time = 1:size(target_data,3)
             numer = numer + abs((target_data(channel, trial, time) * time));
             denom = denom + abs(target_data(channel, trial, time));
-            if mod(time, 500) == 0
-                fprintf('.');
-            end
         end
-        fprintf('done trial %i\n', trial);
         centroid_location(channel, trial) = numer / denom;
     end
     fprintf('\n ------------------ Channel %i done-------------------------\n', channel);
