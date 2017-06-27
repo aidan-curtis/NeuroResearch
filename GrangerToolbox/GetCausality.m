@@ -1,11 +1,9 @@
 %% Downsample the existing data
-for channel = [1:6]
+for channel = [1:20]
     for trial = [1:20]
         down_trial(channel, :, trial) = downsample(trial_data(channel, :, trial), 5);
     end
 end
-    
-
 X = down_trial;
     
 
@@ -30,32 +28,6 @@ fs        = 200;    % sample rate (Hz)
 fres      = [];     % frequency resolution (empty for automatic calculation)
 
 seed      = 0;      % random seed (0 for unseeded)
-
-%% Generate VAR test data (<mvgc_schema.html#3 |A3|>)
-%
-% _*Note:*_ This is where you would read in your own time series data; it should
-% be assigned to the variable |X| (see below and <mvgchelp.html#4 Common
-% variable names and data structures>).
-
-% Seed random number generator.
-
-rng_seed(seed);
-
-% Get VAR coefficients for 5-node test network.
-
-AT = var5_test;
-nvars = size(AT,1); % number of variables
-
-% Residuals covariance matrix.
-
-SIGT = eye(nvars);
-
-% Generate multi-trial VAR time series data with normally distributed residuals
-% for specified coefficients and covariance matrix.
-
-ptic('\n*** var_to_tsdata... ');
-X = var_to_tsdata(AT,SIGT,nobs,ntrials);
-ptoc;
 
 %% Model order estimation (<mvgc_schema.html#3 |A2|>)
 
