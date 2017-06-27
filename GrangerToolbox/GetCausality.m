@@ -1,5 +1,5 @@
 %% Downsample the existing data
-for channel = [1:20]
+for channel = [20:30]
     for trial = [1:20]
         down_trial(channel, :, trial) = downsample(trial_data(channel, :, trial), 5);
     end
