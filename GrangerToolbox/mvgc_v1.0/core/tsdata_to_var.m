@@ -97,12 +97,13 @@ if  strcmpi(regmode,'OLS') % OLS (QR decomposition)
     np = n*p;
 
     % stack lags
-
     X0 = reshape(X(:,p1:m,:),n,M); % concatenate trials for unlagged observations
     XL = zeros(n,p,M);
+    
     for k = 1:p
         XL(:,k,:) = reshape(X(:,p1-k:m-k,:),n,M); % concatenate trials for k-lagged observations
     end
+    
     XL = reshape(XL,np,M);         % stack lags
 
     A = X0/XL;                     % OLS using QR decomposition

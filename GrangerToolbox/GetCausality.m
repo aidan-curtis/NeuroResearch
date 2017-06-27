@@ -1,61 +1,17 @@
-%% MVGC demo
-%
-% Demonstrates typical usage of the MVGC toolbox on generated VAR data for a
-% 5-node network with known causal structure (see <var5_test.html |var5_test|>).
-% Estimates a VAR model and calculates time- and frequency-domain
-% pairwise-conditional Granger causalities (also known as the "causal graph").
-% Also calculates Seth's causal density measure [2].
-%
-% This script is a good starting point for learning the MVGC approach to
-% Granger-causal estimation and statistical inference. It may serve as a useful
-% template for your own code. The computational approach demonstrated here will
-% make a lot more sense alongside the reference document> [1], which we
-% _strongly recommend_ you consult, particularly Section 3 on design principles
-% of the toolbox. You might also like to refer to the <mvgc_schema.html schema>
-% of MVGC computational pathways - <mvgc_schema.html#3 algorithms> |A<n>| in
-% this demo refer to the algorithm labels listed there - and the
-% <mvgchelp.html#4 Common variable names and data structures> section of the
-% Help documentation.
-%
-% *_FAQ:_* _Why do the spectral causalities look so smooth?_ 
-%
-% This is because spectral quantities are calculated from the estimated VAR,
-% rather than sampled directly. This is in accordance with the MVGC design
-% principle that all causal estimates be based on the <mvgc_demo.html#6
-% estimated VAR model> for your data, and guarantees that spectral causalities
-% <mvgc_demo.html#10 integrate correctly> to time-domain causality as theory
-% requires. See [1] for details.
-% 
-% *_Note_*: Do _not_ pre-filter your data prior to GC estimation, _except_
-% possibly to improve stationarity (e.g notch-filtering to eliminate line noise
-% or high-pass filtering to suppress low-frequency transients). Pre-filtering
-% (of stationary data) may seriously degrade Granger-causal inference! If you
-% want (time-domain) GC over a limited frequency range, rather calculate
-% "band-limited" GC; to do this, calculate frequency-domain GCs over the full
-% frequency range, then integrate over the desired frequency band [3]; see
-% <smvgc_to_mvgc.html |smvgc_to_mvgc|>.
-%
-%% References
-%
-% [1] L. Barnett and A. K. Seth,
-% <http://www.sciencedirect.com/science/article/pii/S0165027013003701 The MVGC
-%     Multivariate Granger Causality Toolbox: A New Approach to Granger-causal
-% Inference>, _J. Neurosci. Methods_ 223, 2014
-% [ <matlab:open('mvgc_preprint.pdf') preprint> ].
-%
-% [2] A. B. Barrett, L. Barnett and A. K. Seth, "Multivariate Granger causality
-% and generalized variance", _Phys. Rev. E_ 81(4), 2010.
-%
-% [3] L. Barnett and A. K. Seth, "Behaviour of Granger causality under
-% filtering: Theoretical invariance and practical application", _J. Neurosci.
-% Methods_ 201(2), 2011.
-%
-% (C) Lionel Barnett and Anil K. Seth, 2012. See file license.txt in
-% installation directory for licensing terms.
-%
+%% Downsample the existing data
+for channel = [1:size(trial_data,1)]
+    for trial = [1:20]
+        down_trial(channel, :, trial) = downsample(trial_data(channel, :, trial), 5);
+    end
+end
+    
+
+X = down_trial;
+    
+
 %% Parameters
 
-ntrials   = 10;     % number of trials
+ntrials   = 20;     % number of trials
 nobs      = 1000;   % number of observations per trial
 
 regmode   = 'OLS';  % VAR model estimation regression mode ('OLS', 'LWR' or empty for default)

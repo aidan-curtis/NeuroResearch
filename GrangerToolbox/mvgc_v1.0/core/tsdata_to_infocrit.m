@@ -124,7 +124,12 @@ if  strcmpi(regmode,'OLS') % OLS (QR decomposition)
             fprintf(2,'  WARNING: model order too large (must be < %d)\n',m);
             continue
         end
-
+        % q is the max model order
+        % N is the total number of trials
+        % m is the total number of data points in one trial
+        % q1 is the max model order +1
+        % M = 10*(1000-8)
+        
         q1 = q+1;
         M = N*(m-q);
         nq = n*q;
