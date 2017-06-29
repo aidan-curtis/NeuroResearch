@@ -50,6 +50,10 @@
 
 function [aic,bic] = infocrit(L,k,m)
 
+L
+k
+m
+
 if m-k-1 <= 0
     aic = NaN;
 else
