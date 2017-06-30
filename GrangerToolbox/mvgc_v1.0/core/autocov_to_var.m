@@ -104,7 +104,11 @@ AB(:,kb) = GF(kf,:)/G0;
 % and loop
 
 for k=2:q
+k
 
+  q
+
+    
     AAF = (GB((r-1)*n+1:r*n,:)-AF(:,kf)*GB(kb,:))/(G0-AB(:,kb)*GB(kb,:)); % DF/VB
     AAB = (GF((k-1)*n+1:k*n,:)-AB(:,kb)*GF(kf,:))/(G0-AF(:,kf)*GF(kf,:)); % DB/VF
 

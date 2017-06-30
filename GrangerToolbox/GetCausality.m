@@ -1,13 +1,17 @@
 %% Downsample the existing data
 clearvars down_trial X
+
+important = [8, 9, 29, 30, 31, 32, 33, 34, 35, 42, 43, 44, 48, 49, 50, 51, 52, 53, 57, 58, 59, 60, 76, 78, 79, 80, 81, 84, 85 82, 83, 96, 97, 98, 99, 100, 104, 107]
+
 count = 0
-for channel = [1:20]
+for channel = [8, 9, 29, 30, 31, 32, 33, 34, 35, 42, 43, 44, 48, 49, 50, 51, 52, 53, 57, 58, 59, 60, 76, 78, 79, 80, 81, 84, 85 82, 83, 96, 97, 98, 99, 100, 104, 107]
     count = count+1
     for trial = [1:20]
         down_trial(count, :, trial) = downsample(trial_data(channel, :, trial), 5);
     end
 end
 X = down_trial;
+nvars = size(X, 1)
     
 
 %% Parameters
@@ -64,7 +68,7 @@ else
     fprintf('\nusing specified model order = %d\n',morder);
 end
 
-morder = 3
+morder = 4
 
 %% VAR model estimation (<mvgc_schema.html#3 |A2|>)
 
@@ -121,15 +125,20 @@ sig  = significance(pval,alpha,mhtc);
 
 % Plot time-domain causal graph, p-values and significance.
 
+%% Plotting
+
 figure(2); clf;
 subplot(1,3,1);
 plot_pw(F);
+colorbar;
 title('Pairwise-conditional GC');
 subplot(1,3,2);
 plot_pw(pval);
+colorbar;
 title('p-values');
 subplot(1,3,3);
 plot_pw(sig);
+colorbar;
 title(['Significant at p = ' num2str(alpha)])
 
 % For good measure we calculate Seth's causal density (cd) measure - the mean
@@ -176,3 +185,42 @@ end
 
 %%
 % <mvgc_demo.html back to top>
+
+
+
+
+
+
+%% Create a matrix with only the useful nodes and sorted into region bins
+
+important = [8, 9, 29, 30, 31, 32, 33, 34, 35, 42, 43, 44, 48, 49, 50, 51, 52, 53, 57, 58, 59, 60, 76, 78, 79, 80, 81, 84, 85 82, 83, 96, 97, 98, 99, 100, 104, 107]
+cats = [];
+
+bins = unique(data.ch_names(important, 1:2), 'rows')
+
+% for ch = 1:size(important, 2)
+%     important(ch)
+%     data.ch_names(important(ch), 1:2)
+%     if isempty(cats) || isempty(find(cats == data.ch_names(important(ch), 1:2)))
+%         cats = [cats; data.ch_names(important(ch), 1:2)];
+%     end
+% end
+
+%% Create graph
+
+graph = zeros(size(bins, 1), size(bins, 1));
+
+%collapse rows
+for i = 1:size(pval,1)
+    for j = 1:size(pval, 2)
+        
+        bini = find(ismember(bins,data.ch_names(important(i), 1:2), 'rows'))
+        binj = find(ismember(bins,data.ch_names(important(j), 1:2), 'rows'))
+        graph(bini, binj) = graph(bini, binj)+pval(i,j)
+    end
+end
+
+%% Plotting graph
+
+heatmap(graph)
+   
