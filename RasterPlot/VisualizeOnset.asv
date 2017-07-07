@@ -33,7 +33,6 @@ for count = sorted_CL_indices(:)'
     hold on
     plot (filtered_mean_across_trials(count, :))
     plot (centroid_location_with_avg_trial(count, 248), mean_across_trials(count, floor(centroid_location_with_avg_trial(count,248))), '*r')
-    plot (minusmin_centroid_location(count), mean_across_trials(count, floor(minusmin_centroid_location(count))), '*g')
     hold off
     title ('Average z-score and filtered average z-score for CH' + [string + count] + ' with centroid marked');
     subplot(2,1,2)
@@ -83,24 +82,3 @@ count = mod(count + 1, length(wave_channels))
 plot(mean_across_trials(wave_channels(sorted_av_CL_indices(count)),:))
 
 %%
-target_data = mean_across_trials;
-
-minusmin_centroid_location = zeros(107, 1);
-
-count = 0;
-for channel = 1:107
-    count = count + 1;
-    numer = 0; %Sum: f(x)*x
-    denom = 0; %Sum: x
-    lolz_real_target_data = target_data(channel, :) - min(target_data(channel, :));
-    for time = 1:size(target_data,2)
-        numer = numer + abs((target_data(channel, time) * time));
-        denom = denom + abs(target_data(channel, time));
-        if mod(time, 500) == 0
-            fprintf('.');
-        end
-    end
-    fprintf('done trial %i\n', trial);
-    minusmin_centroid_location(count) = numer / denom;
-    fprintf('\n ------------------ Channel %i done-------------------------\n', channel);
-end
