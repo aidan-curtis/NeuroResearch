@@ -1,4 +1,11 @@
-target_data = trial_z_score;
+for channel = 1:size(trial_z_score, 1)
+    for trial = 1:size(trial_z_score,2)
+        real_target_data(channel, trial, :) = reshape(abs(trial_z_score(channel,trial, :)), [1, 5000]);
+        real_target_data(channel, trial, :) = real_target_data(channel, trial,:) - min(real_target_data(channel, trial,:));
+    end
+end
+%%
+target_data = real_target_data;
 
 centroid_location = zeros(size(target_data,1), size(target_data,2));
 
@@ -7,8 +14,8 @@ for channel = 1:size(target_data, 1)
         numer = 0; %Sum: f(x)*x
         denom = 0; %Sum: x
         for time = 1:size(target_data,3)
-            numer = numer + abs((target_data(channel, trial, time) * time));
-            denom = denom + abs(target_data(channel, trial, time));
+            numer = numer + (target_data(channel, trial, time) * time);
+            denom = denom + target_data(channel, trial, time);
         end
         centroid_location(channel, trial) = numer / denom;
     end
