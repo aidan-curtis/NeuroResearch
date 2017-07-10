@@ -70,7 +70,7 @@ if warn_if(isbad(SIG),'in full regression - regression failed'), return; end % s
 LSIG = log(diag(SIG));
 
 for j = 1:n
-    
+    fprintf("%d/%d\n", j, n);
     % reduced regression
     
     jo = [1:j-1 j+1:n]; % omit j

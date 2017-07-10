@@ -86,6 +86,7 @@ h = fres+1;
 f = nan(n,n,h);
 
 for j = 1:n
+    fprintf("%d/%d\n",j, n)
     jo  = [1:j-1 j+1:n]; % omit j
     joj = [jo j];        % rearrange with omitted j indices first
 

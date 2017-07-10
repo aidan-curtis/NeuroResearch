@@ -1,13 +1,14 @@
 %% Downsample the existing data
 clearvars down_trial X
 
-important = [8, 9, 29, 30, 31, 32, 33, 34, 35, 42, 43, 44, 48, 49, 50, 51, 52, 53, 57, 58, 59, 60, 76, 78, 79, 80, 81, 84, 85 82, 83, 96, 97, 98, 99, 100, 104, 107]
+important = [1:37 93:100]
+
 
 count = 0
-for channel = [8, 9, 29, 30, 31, 32, 33, 34, 35, 42, 43, 44, 48, 49, 50, 51, 52, 53, 57, 58, 59, 60, 76, 78, 79, 80, 81, 84, 85 82, 83, 96, 97, 98, 99, 100, 104, 107]
+for channel = important
     count = count+1
-    for trial = [1:20]
-        down_trial(count, :, trial) = downsample(trial_data(channel, :, trial), 5);
+    for trial = data.use_trials(1:20)
+        down_trial(count, :, trial) = downsample(trial_data(channel, :, trial), 20);
     end
 end
 X = down_trial;
@@ -17,7 +18,7 @@ nvars = size(X, 1)
 %% Parameters
 
 ntrials   = 20;     % number of trials
-nobs      = 1000;   % number of observations per trial
+nobs      = 250;   % number of observations per trial
 
 regmode   = 'OLS';  % VAR model estimation regression mode ('OLS', 'LWR' or empty for default)
 icregmode = 'LWR';  % info 
@@ -30,7 +31,7 @@ tstat     = '';     % statistical test for MVGC:  'F' for Granger's F-test (defa
 alpha     = 0.05;   % significance level for significance test
 mhtc      = 'FDR';  % multiple hypothesis test correction (see routine 'significance')
 
-fs        = 200;    % sample rate (Hz)
+fs        = 50;    % sample rate (Hz)
 fres      = [];      % frequency resolution (empty for automatic calculation)
 
 seed      = 0;      % random seed (0 for unseeded)
@@ -46,7 +47,7 @@ ptoc('*** tsdata_to_infocrit took ');
 % Plot information criteria.
 
 figure(1); clf;
-plot_tsdata([BIC, BIC]',{'AIC','BIC'},1/fs);
+plot_tsdata([AIC, BIC]',{'AIC','BIC'},1/fs);
 title('Model order estimation');
 
 % amo = size(AT,3); % actual model order
@@ -68,7 +69,7 @@ else
     fprintf('\nusing specified model order = %d\n',morder);
 end
 
-morder = 4
+morder = 3
 
 %% VAR model estimation (<mvgc_schema.html#3 |A2|>)
 
@@ -150,7 +151,7 @@ cd = mean(F(~isnan(F)));
 fprintf('\ncausal density = %f\n',cd);
 
 %% Granger causality calculation: frequency domain  (<mvgc_schema.html#3 |A14|>)
-% Do not use until you know what it means
+
 
 % Calculate spectral pairwise-conditional causalities at given frequency
 % resolution - again, this only requires the autocovariance sequence.
@@ -206,7 +207,7 @@ bins = unique(data.ch_names(important, 1:2), 'rows')
 %     end
 % end
 
-%% Create graph
+%% Create graph us
 
 graph = zeros(size(bins, 1), size(bins, 1));
 
