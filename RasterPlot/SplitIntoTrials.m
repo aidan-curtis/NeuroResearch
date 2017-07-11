@@ -10,3 +10,4 @@ for channel=1:size(target_data,1)
         relative_articulation_time(trial_num) = data.use_articulations(trial_num) - data.use_times(trial_num);
     end
 end
+

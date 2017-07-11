@@ -290,36 +290,42 @@ electrodes = {
 image = cv2.imread('LBI.png', cv2.IMREAD_COLOR)
 
 #The nxn matrix of values that represent the connection strength
-mat = sio.loadmat('mean_coh.mat')
+mat = sio.loadmat('final.mat')
 
 #The nx1 matrix of channel names
 mat2 = sio.loadmat('channels_occ.mat')
-weights = mat['mean_coh']
+weights = mat['final']
 channel_names = mat2['channels']
 
 #This is the threshold for width sizes that appear on the screen.
 thresh = 3
 
 #This is the multiplier for your weight values.
-const = 40
+const = 12
 
 # Weights of different colors have to be in different weight matricies
+imgArr = []
+for fetch_index in range(70):
+	image = cv2.imread('LBI.png', cv2.IMREAD_COLOR)
+	print("processing frame "+str(fetch_index))
+	#Use the map_connections function to change weights after the are already connections. Here I am using it to select which connections are which colors.
+	def map_connections(connection):
+		if(connection.head<connection.tail):
+			pass
+		return connection
+
+	sendingArr = []
+	for i in range(len(weights)):
+		tempArr = []
+		for j in range(len(weights[0])):
+			tempArr.append(weights[i][j][fetch_index])
+		sendingArr.append(tempArr)
 
 
-#Use the map_connections function to change weights after the are already connections. Here I am using it to select which connections are which colors.
-# def map_connections(connection):
-# 	if(connection.head<connection.tail):
-# 		connection.weights[0] = 0
-# 		connection.weights[1] = 0
-# 		connection.weights[2] = 0
-# 	return connection
-
-# ch_weights = [weights,weights,weights]
-# ch_colors = [(0,0,255), (255,0,0), (0,255,0)]
-# electrode_colors = collections.defaultdict(lambda: (255, 255, 255))
-# img = mainProcess(image, electrodes, channel_names, ch_weights, channel_colors = electrode_colors,connection_colors = ch_colors, connections_mapping = map_connections)
-# exportImage(img, "DemoImage.png")
-
+	ch_weights = [sendingArr]
+	ch_colors = [(0,0,255)]
+	electrode_colors = collections.defaultdict(lambda: (255, 255, 255))
+	imgArr.append(mainProcess(image, electrodes, channel_names, ch_weights, channel_colors = electrode_colors,connection_colors = ch_colors, connections_mapping = map_connections))
 
 
 
@@ -327,27 +333,8 @@ const = 40
 #---------------------------------
 # Demo Video Code
 
-output = "testme"
-video_length = 20
-imgArr = []
-
-for t in range(video_length):
-	print("processing image "+str(t+1))
-	image = cv2.imread('LBI.png', cv2.IMREAD_COLOR)
-
-	def map_connections(connection):
-		if(connection.head<connection.tail):
-			connection.weights[0] = 0
-			connection.weights[1] = 0
-			connection.weights[2] = 0
-		return connection
-
-	ch_weights = [weights,weights,weights]
-	ch_colors = [(0,0,255), (255,0,0), (0,255,0)]
-	electrode_colors = collections.defaultdict(lambda: ((20-t)*10, (20-t)*10, (20-t)*10))
-	imgArr.append(mainProcess(image, electrodes, channel_names, ch_weights, channel_colors = electrode_colors,connection_colors = ch_colors, connections_mapping = map_connections))
-
-
+# CREATING VIDEO FROM imgArr!!
+output = "testme2"
 r_imgArray = []
 height, width, channels = imgArr[0].shape
 # Determine the width and height from the first image
@@ -364,12 +351,15 @@ cv2.imshow('video',r_imgArray[0])
 # Define the codec and create VideoWriter object
 fourcc = cv2.VideoWriter_fourcc(*'mp4v') # Be sure to use lower case
 out = cv2.VideoWriter(output, fourcc, 20.0, (width, height))
-
+print("Creating video")
+count = 0
 for my_image in r_imgArray:
-    print("asdf")
+
+
+    count = count+1
+    print("Rendering frame "+str(count))
 
     out.write(my_image) # Write out frame to video
-
     cv2.imshow('video',my_image)
     if (cv2.waitKey(1) & 0xFF) == ord('q'): # Hit `q` to exit
         break
@@ -381,27 +371,6 @@ cv2.destroyAllWindows()
 print("The output video is {}".format(output))
 
 
-
-
-# output = "DemoVideo.mp4"
-# cv2.imshow('video',imgArr[0])
-# height, width, channels = imgArr[0].shape
-
-# # Define the codec and create VideoWriter object
-# fourcc = cv2.VideoWriter_fourcc(*'mp4v') # Be sure to use lower case
-# out = cv2.VideoWriter(output, fourcc, 20.0, (width, height))
-# count = 0
-# for image in imgArr:
-# 	count += 1
-# 	print("rendering frame "+str(count))
-# 	out.write(image)
-# 	cv2.imshow('video',image)
-# 	if (cv2.waitKey(1) & 0xFF) == ord('q'): # Hit `q` to exit
-# 		break
-
-# # Release everything if job is finished
-# out.release()
-# cv2.destroyAllWindows()
 
 
 
