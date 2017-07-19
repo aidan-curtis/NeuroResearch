@@ -3,7 +3,6 @@ clearvars down_trial X
 
 important = [1:37 93:100]
 
-
 count = 0
 for channel = important
     count = count+1
@@ -18,7 +17,7 @@ nvars = size(X, 1)
 %% Parameters
 
 ntrials   = 20;     % number of trials
-nobs      = 250;   % number of observations per trial
+nobs      = 75;   % number of observations per trial
 
 regmode   = 'OLS';  % VAR model estimation regression mode ('OLS', 'LWR' or empty for default)
 icregmode = 'LWR';  % info 

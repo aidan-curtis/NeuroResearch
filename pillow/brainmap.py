@@ -4,6 +4,7 @@ import math
 import re
 import collections
 import os
+import numpy
 
 
 
@@ -125,7 +126,11 @@ def setNodeColors(img, channel_map, colors = None):
 	"""
 	if(colors != None):
 		for name in channel_map.keys():
+			print("COLORING")
 			cv2.circle(img, channel_map[name], 40, colors[name], -1, lineType=8, shift=0)
+			print("CHANNEL: "+str(name))
+			print("COLOR: "+str(colors[name]))
+			print("__________________")
 	else:
 		for name in channel_map.keys():
 			cv2.circle(img, channel_map[name], 40, (255, 255, 255), -1, lineType=8, shift=0)
@@ -281,7 +286,7 @@ electrodes = {
 }
 
 #--------------------------------------------
-#Demo Image Code
+#Demo Video Code
 
 
 
@@ -292,10 +297,15 @@ image = cv2.imread('LBI.png', cv2.IMREAD_COLOR)
 #The nxn matrix of values that represent the connection strength
 mat = sio.loadmat('final.mat')
 
+thecolors = sio.loadmat('thecolors.mat')
+
 #The nx1 matrix of channel names
 mat2 = sio.loadmat('channels_occ.mat')
+full_channels = sio.loadmat('fullchannels.mat')
 weights = mat['final']
+colors = thecolors['thecolors']
 channel_names = mat2['channels']
+full_channel_names = full_channels['channels']
 
 #This is the threshold for width sizes that appear on the screen.
 thresh = 3
@@ -305,27 +315,47 @@ const = 12
 
 # Weights of different colors have to be in different weight matricies
 imgArr = []
-for fetch_index in range(70):
+
+
+for time in range(337):
+	print("Rendering frame "+str(time))
 	image = cv2.imread('LBI.png', cv2.IMREAD_COLOR)
-	print("processing frame "+str(fetch_index))
-	#Use the map_connections function to change weights after the are already connections. Here I am using it to select which connections are which colors.
-	def map_connections(connection):
-		if(connection.head<connection.tail):
-			pass
-		return connection
-
-	sendingArr = []
-	for i in range(len(weights)):
-		tempArr = []
-		for j in range(len(weights[0])):
-			tempArr.append(weights[i][j][fetch_index])
-		sendingArr.append(tempArr)
-
-
-	ch_weights = [sendingArr]
+	ch_weights = [numpy.zeros((107,107))]
 	ch_colors = [(0,0,255)]
 	electrode_colors = collections.defaultdict(lambda: (255, 255, 255))
-	imgArr.append(mainProcess(image, electrodes, channel_names, ch_weights, channel_colors = electrode_colors,connection_colors = ch_colors, connections_mapping = map_connections))
+	node_number = 0
+	for channel_name in full_channel_names:
+		(r, g, b) = tuple([255*a for a in colors[node_number][time*13]])
+		electrode_colors[channel_name.replace(" ", "")] = (b, g, r)
+		node_number = node_number+1
+	
+	imgArr.append(mainProcess(image, electrodes, channel_names, ch_weights, channel_colors = electrode_colors,connection_colors = ch_colors))
+
+
+
+
+# imgArr = []
+# for fetch_index in range(70):
+# 	image = cv2.imread('LBI.png', cv2.IMREAD_COLOR)
+# 	print("processing frame "+str(fetch_index))
+# 	#Use the map_connections function to change weights after the are already connections. Here I am using it to select which connections are which colors.
+# 	def map_connections(connection):
+# 		if(connection.head<connection.tail):
+# 			pass
+# 		return connection
+
+# 	sendingArr = []
+# 	for i in range(len(weights)):
+# 		tempArr = []
+# 		for j in range(len(weights[0])):
+# 			tempArr.append(weights[i][j][fetch_index])
+# 		sendingArr.append(tempArr)
+
+
+# 	ch_weights = [sendingArr]
+# 	ch_colors = [(0,0,255)]
+# 	electrode_colors = collections.defaultdict(lambda: (255, 255, 255))
+# 	imgArr.append(mainProcess(image, electrodes, channel_names, ch_weights, channel_colors = electrode_colors,connection_colors = ch_colors, connections_mapping = map_connections))
 
 
 
@@ -333,13 +363,13 @@ for fetch_index in range(70):
 #---------------------------------
 # Demo Video Code
 
-# CREATING VIDEO FROM imgArr!!
-output = "testme2"
+# CREATING VIDEO FROM imgArr
+output = "outputfile"
 r_imgArray = []
 height, width, channels = imgArr[0].shape
 # Determine the width and height from the first image
 for kimage in imgArr:
-	r_image = cv2.resize(kimage, (int(1/2*width), int(1/2*height)), interpolation = cv2.INTER_CUBIC)
+	r_image = cv2.resize(kimage, (int(1/5*width), int(1/5*height)), interpolation = cv2.INTER_CUBIC)
 	r_imgArray.append(r_image)
 
 
@@ -354,7 +384,6 @@ out = cv2.VideoWriter(output, fourcc, 20.0, (width, height))
 print("Creating video")
 count = 0
 for my_image in r_imgArray:
-
 
     count = count+1
     print("Rendering frame "+str(count))

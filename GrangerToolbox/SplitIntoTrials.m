@@ -1,6 +1,6 @@
 target_data = data.eeg; %full time series,, (channel, time)
 
-TRIAL_LENGTH = 5000
+TRIAL_LENGTH = 1500
 trial_data= zeros(size(target_data, 1), TRIAL_LENGTH,size(data.use_trials, 1));
 relative_articulation_time = zeros(size(data.use_trials,1),1);
 

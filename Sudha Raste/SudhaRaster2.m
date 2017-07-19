@@ -1,5 +1,5 @@
 % for plotting
-load('ta505_common_fil.mat');
+load('ta505_common_file.mat');
 %load bad channel data
 load('ta505_bad_channels.mat');
 use_trials = find(data.accuracy(:).*data.tech(:).*data.noise(:));
